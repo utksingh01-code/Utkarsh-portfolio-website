@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utkarsh Singh | Marketing Portfolio</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap');
+        
+        /* Updated Fonts for Premium Feel */
+        body { font-family: 'Lato', sans-serif; }
+        h1, h2, h3, .font-serif { font-family: 'Playfair Display', serif; }
+        
+        /* Animation Keyframes */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C5A059; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1B365D; 
+        }
+    </style>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "react": "https://esm.sh/react@18.2.0",
+            "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+            "lucide-react": "https://esm.sh/lucide-react@0.263.1"
+        }
+    }
+    </script>
+    
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 selection:bg-[#C5A059] selection:text-white">
+    <div id="root"></div>
+
+    <script type="text/babel" data-type="module">
+        import React, { useState } from 'react';
+        import { createRoot } from 'react-dom/client';
+        import { 
+            User, Mail, Linkedin, FileText, Video, Award, Briefcase, 
+            BookOpen, Star, ChevronRight, Download, Menu, X, ExternalLink, 
+            GraduationCap, Layout, Heart, Camera, TrendingUp, ChevronDown, ChevronUp, FileAudio, FolderOpen
+        } from 'lucide-react';
+
+        // --- Data Configuration (CUSTOMIZED FOR MARKETING) ---
+        const PROFILE = {
+            name: "Utkarsh Singh",
+            title: "Marketing Strategist | Data-Driven Brand Specialist",
+            location: "Mirzapur, Uttar Pradesh",
+            email: "utk.singh01@gmail.com",
+            phone: "+91 6392527005",
+            linkedin: "https://www.linkedin.com/in/utkarsh-singh-pgdm",
+            summary: "Detail-oriented management student with 2+ years of experience in sales operations, retail order processing, and inventory management within the healthcare distribution sector. Experienced in handling 200+ daily retail orders and maintaining accurate sales documentation for Abbott nutrition products. Skilled in market research, consumer behavior analysis, and brand strategy, with growing expertise in marketing analytics and consumer psychology."
+        };
+
+        const EXPERIENCE = [
+            {
+                role: "Sales Operations & Inventory Coordinator",
+                company: "Salankar Associates",
+                location: "India",
+                duration: "Dec 2022 - Jan 2025",
+                responsibilities: [
+                    "Maintained daily sales records and transaction documentation for Abbott healthcare products including Pediasure and Ensure.",
+                    "Processed and documented 200+ retail orders per day across 70+ retail outlets, ensuring accurate order tracking.",
+                    "Prepared sales invoices and delivery documentation to support efficient next-day product distribution."
+                ],
+                keyLearnings: [
+                    "Inventory Management: Monitored inventory levels and stock movement, improving accuracy and reducing stock discrepancies.",
+                    "Data-Driven Decisions: Generated daily reports using BUSY software to support operational planning and business decision-making.",
+                    "Retail Distribution: Coordinated seamless supply chain operations to guarantee timely delivery to 70+ retail partners."
+                ]
+            }
+        ];
+
+        const EDUCATION = [
+            {
+                degree: "PGDM - Marketing",
+                institution: "ISBR Business School",
+                year: "2025 - 2027 (Expected)",
+            },
+            {
+                degree: "Bachelor of Commerce (B.Com)",
+                institution: "Allahabad University",
+                year: "2022 - 2024",
+            }
+        ];
+
+        const SKILLS = {
+            marketing: ["Brand Voice Strategy", "Market Research & Insights", "Consumer Behavior Analysis", "ROI Optimization"],
+            technical: ["Data Analysis (Excel, Python)", "Performance Reporting", "Web Basics (HTML/CSS/JS)", "PowerPoint Storytelling"],
+            soft: ["Strategic Leadership", "Client Relationship Mgmt", "Analytical Problem Solving", "Cross-functional Collaboration"]
+        };
+
+        const PROJECTS = [
+            {
+                title: "Digital Transformation & Growth Strategy (Local Vendor)",
+                objective: "Analyzed the expansion strategy for a retailer transitioning from single-store to multi-branch digital operations.",
+                outcome: "Developed a roadmap for digital adoption and operational scalability to support business expansion."
+            },
+            {
+                title: "Operational Efficiency & CX Study (McDonald's)",
+                objective: "Evaluated supply chain logistics and peak-hour workflows to assess impact on Customer Experience (CX).",
+                outcome: "Identified key management strategies that sustain service quality and brand promise under high pressure."
+            }
+        ];
+
+        const CERTIFICATIONS = [
+            "Master Your Brand Voice | Semrush Academy (Expires Feb 2026)",
+            "Bloomberg Market Concepts | Bloomberg L.P.",
+            "O-Level Course | NIELIT (Basics of Programming & Web Development)"
+        ];
+
+        const EXTRAS = [
+            {
+                title: "Social Impact Branding: 'Contribution to Compassion'",
+                description: "Founded a strategic initiative to support NGOs for disabled individuals, animal welfare, and the elderly.",
+                details: "Focusing on fundraising strategies and increasing public visibility (Brand Awareness) for social causes."
+            },
+            {
+                title: "Market Trends Research Paper",
+                description: "Participated in academic research presentation focusing on emerging market trends.",
+                details: "Conducted primary research and presented findings to a panel of industry experts."
+            }
+        ];
+
+        // --- Theme Colors ---
+        const COLORS = {
+            primary: "#1B365D",    // Royal Navy
+            accent: "#C5A059",     // Muted Gold
+            accentLight: "#F5E6CA", // Light Gold BG
+            accentText: "#856404",  // Dark Gold Text
+            bgDark: "#0F172A",     // Deep Slate
+            textDark: "#1E293B",   // Slate 800
+        };
+
+        // --- UI Components ---
+
+        const SectionTitle = ({ children, icon: Icon }) => (
+            <div className="flex items-center gap-3 mb-8 border-b border-slate-200 pb-4">
+                {Icon && (
+                    <div className="p-2 rounded-lg" style={{ backgroundColor: COLORS.accentLight, color: COLORS.accentText }}>
+                        <Icon size={24} />
+                    </div>
+                )}
+                <h2 className="text-3xl font-serif font-bold" style={{ color: COLORS.primary }}>{children}</h2>
+            </div>
+        );
+
+        const Card = ({ children, className = "" }) => (
+            <div className={`bg-white rounded-lg shadow-sm border border-slate-200 p-6 hover:shadow-lg transition-all duration-300 ${className}`}>
+                {children}
+            </div>
+        );
+
+        // --- Profile Image Component (Google Drive Link) ---
+        const ProfileImage = () => {
+            const [hasError, setHasError] = useState(false);
+            // VIP Direct Link format for Google Drive
+            const driveImageUrl = "https://lh3.googleusercontent.com/d/1NWgxs1eXGYLnGyOGzp83K6JMOtPOmqP3";
+
+            return (
+                <div className="w-48 h-48 relative rounded-full overflow-hidden border-4 border-white shadow-xl mb-6 bg-slate-200 ring-2 ring-slate-100">
+                    {!hasError ? (
+                        <img 
+                            src={driveImageUrl} 
+                            alt="Utkarsh Singh" 
+                            className="w-full h-full object-cover"
+                            onError={() => setHasError(true)}
+                        />
+                    ) : (
+                        <div className="w-full h-full flex flex-col items-center justify-center text-center p-4 bg-slate-100">
+                            <User className="text-slate-400 mb-2" size={32} />
+                            <p className="text-[10px] text-slate-500 mb-2 leading-tight">Image blocked by browser settings or Drive permissions.</p>
+                        </div>
+                    )}
+                    <div className="absolute inset-0 opacity-10 mix-blend-overlay pointer-events-none" style={{ backgroundColor: COLORS.primary }}></div>
+                </div>
+            );
+        };
+
+        // --- Main Application ---
+
+        function Portfolio() {
+            const [activeTab, setActiveTab] = useState('home');
+            const [isMenuOpen, setIsMenuOpen] = useState(false);
+            const [showTranscript, setShowTranscript] = useState(false);
+
+            const navItems = [
+                { id: 'home', label: 'Introduction' },
+                { id: 'experience', label: 'Experience & CV' },
+                { id: 'skills', label: 'Skills & Projects' },
+                { id: 'extras', label: 'Achievements' },
+            ];
+
+            const renderContent = () => {
+                switch (activeTab) {
+                    case 'home':
+                        return (
+                            <div className="space-y-12 animate-fadeIn">
+                                <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
+                                    <div className="w-full md:w-1/3 flex flex-col items-center">
+                                        <ProfileImage />
+                                        <div className="flex gap-4">
+                                            <a href={PROFILE.linkedin} target="_blank" rel="noreferrer" 
+                                               className="p-3 text-white rounded-full transition shadow-lg hover:-translate-y-1"
+                                               style={{ backgroundColor: '#0077B5' }}
+                                            >
+                                                <Linkedin size={20} />
+                                            </a>
+                                            <a href={`mailto:${PROFILE.email}`} 
+                                               className="p-3 text-white rounded-full transition shadow-lg hover:-translate-y-1"
+                                               style={{ backgroundColor: COLORS.bgDark }}
+                                            >
+                                                <Mail size={20} />
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div className="w-full md:w-2/3 space-y-6">
+                                        <div>
+                                            <h1 className="text-4xl md:text-5xl font-serif font-bold mb-2" style={{ color: COLORS.primary }}>{PROFILE.name}</h1>
+                                            <p className="text-xl font-medium tracking-wide" style={{ color: COLORS.accent }}>{PROFILE.title}</p>
+                                        </div>
+                                        
+                                        {/* MARKETING SUMMARY BLOCK */}
+                                        <div className="relative pl-6 border-l-4" style={{ borderColor: COLORS.accent }}>
+                                            <p className="text-slate-600 leading-relaxed text-lg">
+                                                {PROFILE.summary}
+                                            </p>
+                                        </div>
+
+                                        <div className="flex flex-wrap gap-4 mt-4">
+                                            <button 
+                                                onClick={() => setActiveTab('experience')}
+                                                className="px-8 py-3 text-white rounded-sm font-medium transition flex items-center gap-2 shadow-md hover:shadow-lg"
+                                                style={{ backgroundColor: COLORS.primary }}
+                                            >
+                                                View Full Experience <ChevronRight size={18} />
+                                            </button>
+                                            <a 
+                                                href="https://drive.google.com/file/d/1blHGdETkmPODK_2NMK4EhFUAhJ-6L3PA/view?usp=drivesdk" 
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="px-8 py-3 bg-white border rounded-sm font-medium transition flex items-center gap-2 hover:bg-slate-50"
+                                                style={{ borderColor: COLORS.accent, color: COLORS.primary }}
+                                            >
+                                                <Download size={18} /> Download Resume
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* VIDEO INTRODUCTION SECTION */}
+                                <div className="rounded-xl p-8 text-white relative overflow-hidden shadow-2xl transition-all" style={{ backgroundColor: COLORS.bgDark }}>
+                                    <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl opacity-10 -translate-y-1/2 translate-x-1/2" style={{ backgroundColor: COLORS.accent }}></div>
+                                    
+                                    <div className="flex items-center gap-3 mb-6 border-b border-slate-700 pb-4">
+                                        <div className="p-2 rounded-lg bg-white/10 text-white">
+                                            <Video size={24} />
+                                        </div>
+                                        <h2 className="text-3xl font-serif font-bold text-white">Video Introduction</h2>
+                                    </div>
+
+                                    <div className="flex flex-col gap-4">
+                                        <div className="p-6 rounded-lg border border-slate-700 bg-white/5 flex flex-col md:flex-row items-center justify-between gap-6 hover:bg-white/10 transition duration-300">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-16 h-16 rounded-lg bg-slate-800 flex items-center justify-center text-slate-500 flex-shrink-0 border border-slate-600">
+                                                     <Video size={32} style={{ color: COLORS.accent }} />
+                                                </div>
+                                                <div>
+                                                    <h3 className="text-lg font-bold text-white mb-1">My Marketing Philosophy</h3>
+                                                    <p className="text-slate-400 text-sm">Professional Pitch • 2 min watch</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="flex flex-wrap gap-3 justify-center md:justify-end">
+                                                <button 
+                                                    onClick={() => setShowTranscript(!showTranscript)}
+                                                    className="px-5 py-3 rounded-full font-medium transition flex items-center gap-2 text-sm border border-slate-600 hover:bg-slate-700 text-slate-300"
+                                                >
+                                                    {showTranscript ? <ChevronUp size={16} /> : <FileAudio size={16} />} 
+                                                    {showTranscript ? "Hide Transcript" : "Read Transcript"}
+                                                </button>
+
+                                                <a 
+                                                    href="https://drive.google.com/file/d/1dZ4BjiUrKNUI3pW0s2KwJbeE3yOoLm1k/view?usp=drivesdk"
+                                                    target="_blank" 
+                                                    rel="noreferrer"
+                                                    className="px-6 py-3 rounded-full font-bold transition flex items-center gap-2 whitespace-nowrap shadow-lg hover:shadow-xl hover:scale-105"
+                                                    style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
+                                                >
+                                                    <ExternalLink size={18} /> Watch Video
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        {/* EXPANDABLE TRANSCRIPT AREA */}
+                                        {showTranscript && (
+                                            <div className="bg-slate-800/50 p-6 rounded-lg border border-slate-700 animate-fadeIn">
+                                                <div className="flex items-center gap-2 mb-4 text-slate-400 text-xs uppercase tracking-widest font-bold">
+                                                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: COLORS.accent }}></div>
+                                                    Video Script / Transcript
+                                                </div>
+                                                <div className="space-y-4 text-slate-300 font-light leading-relaxed">
+                                                    <p>
+                                                        <strong className="text-white block mb-1">0:00 - Introduction</strong>
+                                                        "Hello, I’m <span className="text-white font-medium">Utkarsh Singh</span>. I’m a Marketing Strategist who speaks the language of Finance."
+                                                    </p>
+                                                    <p>
+                                                        <strong className="text-white block mb-1">0:15 - The Pivot</strong>
+                                                        "With over 2 years of experience at <span className="text-white font-medium">Salankar Associates</span>, I managed critical financial operations. I learned that efficiency isn't just about numbers—it's about people and processes. I reduced closing times by 2 days and helped scale our client base by 15% without adding headcount."
+                                                    </p>
+                                                    <p>
+                                                        <strong className="text-white block mb-1">0:45 - The Marketing Value</strong>
+                                                        "Now, pursuing my PGDM in Marketing at <span className="text-white font-medium">ISBR Business School</span>, I’m translating that analytical rigor into marketing strategy. I don't just look at 'likes' or 'impressions'; I look at ROI, customer retention, and scalable growth."
+                                                    </p>
+                                                    <p>
+                                                        <strong className="text-white block mb-1">1:15 - Call to Action</strong>
+                                                        "If you’re looking for a marketer who can bridge the gap between creative branding and the bottom line, let’s connect."
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'experience':
+                        return (
+                            <div className="space-y-8 animate-fadeIn">
+                                <div className="flex justify-between items-center flex-wrap gap-4">
+                                    <SectionTitle icon={Briefcase}>Professional Experience</SectionTitle>
+                                    <div className="flex gap-2">
+                                        <span className="px-4 py-1 rounded-full text-sm font-bold border" style={{ backgroundColor: '#F0FDF4', color: '#15803d', borderColor: '#bbf7d0' }}>2+ Years Exp.</span>
+                                    </div>
+                                </div>
+
+                                {EXPERIENCE.map((exp, index) => (
+                                    <Card key={index} className="border-l-4" style={{ borderLeftColor: COLORS.accent }}>
+                                        <div className="flex flex-col md:flex-row justify-between mb-4">
+                                            <div>
+                                                <h3 className="text-2xl font-bold" style={{ color: COLORS.textDark }}>{exp.role}</h3>
+                                                <div className="flex items-center gap-2 font-medium mt-1" style={{ color: COLORS.primary }}>
+                                                    <span className="font-serif italic">{exp.company}</span>
+                                                    <span className="text-slate-300">•</span>
+                                                    <span className="text-slate-500 text-sm">{exp.location}</span>
+                                                </div>
+                                            </div>
+                                            <span className="mt-2 md:mt-0 px-4 py-1 bg-slate-100 text-slate-600 rounded-full text-sm font-bold self-start border border-slate-200">
+                                                {exp.duration}
+                                            </span>
+                                        </div>
+
+                                        <div className="grid md:grid-cols-2 gap-8 mt-6">
+                                            <div>
+                                                <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2 uppercase text-sm tracking-wider">
+                                                    <Layout size={16} style={{ color: COLORS.accent }} /> Core Responsibilities
+                                                </h4>
+                                                <ul className="space-y-3">
+                                                    {exp.responsibilities.map((item, i) => (
+                                                        <li key={i} className="flex gap-3 text-slate-600 text-sm leading-relaxed">
+                                                            <div className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: COLORS.primary }}></div>
+                                                            {item}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                            
+                                            <div className="p-5 rounded-lg border border-slate-100" style={{ backgroundColor: '#F8FAFC' }}>
+                                                <h4 className="font-bold mb-3 flex items-center gap-2 uppercase text-sm tracking-wider" style={{ color: COLORS.primary }}>
+                                                    <TrendingUp size={16} style={{ color: COLORS.accent }} /> Impact & Growth
+                                                </h4>
+                                                <ul className="space-y-3">
+                                                    {exp.keyLearnings.map((item, i) => (
+                                                        <li key={i} className="flex gap-3 text-slate-700 text-sm leading-relaxed">
+                                                            <div className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: COLORS.accent }}></div>
+                                                            {item}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </Card>
+                                ))}
+
+                                <SectionTitle icon={GraduationCap}>Education</SectionTitle>
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    {EDUCATION.map((edu, index) => (
+                                        <Card key={index} className="hover:border-slate-300">
+                                            <div className="flex justify-between items-start">
+                                                <div>
+                                                    <h3 className="text-lg font-bold" style={{ color: COLORS.textDark }}>{edu.degree}</h3>
+                                                    <p className="font-medium mt-1 font-serif italic" style={{ color: COLORS.primary }}>{edu.institution}</p>
+                                                </div>
+                                                <span className="text-xs font-bold bg-slate-100 px-2 py-1 rounded text-slate-500">{edu.year}</span>
+                                            </div>
+                                        </Card>
+                                    ))}
+                                </div>
+                                
+                                <div className="mt-12 p-8 bg-slate-50 rounded-lg border border-slate-200 text-center">
+                                    <FileText size={48} className="mx-auto text-slate-300 mb-4" />
+                                    <h3 className="text-xl font-bold text-slate-700 mb-2">Curriculum Vitae</h3>
+                                    <p className="text-slate-500 mb-6">Download the official PDF version for complete details.</p>
+                                    <a href="https://drive.google.com/file/d/1blHGdETkmPODK_2NMK4EhFUAhJ-6L3PA/view?usp=drivesdk" target="_blank" rel="noreferrer" 
+                                       className="px-8 py-3 text-white rounded-sm hover:opacity-90 transition flex items-center gap-2 mx-auto w-fit shadow-md"
+                                       style={{ backgroundColor: COLORS.primary }}
+                                    >
+                                        <Download size={18} /> Download CV.pdf
+                                    </a>
+                                </div>
+                            </div>
+                        );
+
+                    case 'skills':
+                        return (
+                            <div className="space-y-12 animate-fadeIn">
+                                <div>
+                                    <SectionTitle icon={Layout}>Skills & Expertise</SectionTitle>
+                                    <div className="grid md:grid-cols-3 gap-6">
+                                        <Card>
+                                            <h3 className="font-bold text-lg mb-4 pb-2 border-b border-slate-100" style={{ color: COLORS.textDark }}>Marketing & Strategy</h3>
+                                            <div className="flex flex-wrap gap-2">
+                                                {SKILLS.marketing.map((s, i) => (
+                                                    <span key={i} className="px-3 py-1 bg-slate-50 text-slate-700 rounded-sm text-sm font-medium border border-slate-200">{s}</span>
+                                                ))}
+                                            </div>
+                                        </Card>
+                                        <Card>
+                                            <h3 className="font-bold text-lg mb-4 pb-2 border-b border-slate-100" style={{ color: COLORS.textDark }}>Data & Technical</h3>
+                                            <div className="flex flex-wrap gap-2">
+                                                {SKILLS.technical.map((s, i) => (
+                                                    <span key={i} className="px-3 py-1 bg-slate-50 text-slate-700 rounded-sm text-sm font-medium border border-slate-200">{s}</span>
+                                                ))}
+                                            </div>
+                                        </Card>
+                                        <Card>
+                                            <h3 className="font-bold text-lg mb-4 pb-2 border-b border-slate-100" style={{ color: COLORS.textDark }}>Leadership</h3>
+                                            <div className="flex flex-wrap gap-2">
+                                                {SKILLS.soft.map((s, i) => (
+                                                    <span key={i} className="px-3 py-1 bg-slate-50 text-slate-700 rounded-sm text-sm font-medium border border-slate-200">{s}</span>
+                                                ))}
+                                            </div>
+                                        </Card>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <SectionTitle icon={BookOpen}>Marketing Case Studies</SectionTitle>
+                                    <div className="grid gap-6">
+                                        {PROJECTS.map((project, index) => (
+                                            <div key={index} className="group relative bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden hover:shadow-lg transition-all">
+                                                <div className="absolute top-0 left-0 w-1.5 h-full group-hover:w-3 transition-all" style={{ backgroundColor: COLORS.primary }}></div>
+                                                <div className="p-6 pl-8">
+                                                    <h3 className="text-xl font-bold mb-2" style={{ color: COLORS.textDark }}>{project.title}</h3>
+                                                    <div className="grid md:grid-cols-2 gap-6 mt-4">
+                                                        <div className="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                                                            <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Challenge</p>
+                                                            <p className="text-slate-700 text-sm">{project.objective}</p>
+                                                        </div>
+                                                        <div className="p-4 rounded-lg border" style={{ backgroundColor: '#F0FFF4', borderColor: '#bbf7d0' }}>
+                                                            <p className="text-xs font-bold uppercase tracking-wide mb-1" style={{ color: '#166534' }}>Strategic Outcome</p>
+                                                            <p className="text-slate-700 text-sm">{project.outcome}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'extras':
+                        return (
+                            <div className="space-y-12 animate-fadeIn">
+                                <div>
+                                    <SectionTitle icon={Award}>Certifications</SectionTitle>
+                                    <div className="grid md:grid-cols-2 gap-4">
+                                        {CERTIFICATIONS.map((cert, index) => (
+                                            <div key={index} className="flex items-start gap-4 p-4 bg-white rounded-lg border border-slate-200 shadow-sm hover:border-[#C5A059] transition">
+                                                <div className="p-2 rounded-full" style={{ backgroundColor: COLORS.accentLight, color: COLORS.accentText }}>
+                                                    <Award size={20} />
+                                                </div>
+                                                <div>
+                                                    <p className="font-medium" style={{ color: COLORS.textDark }}>{cert}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    
+                                    {/* Link to Google Drive Certificates Folder */}
+                                    <div className="mt-6">
+                                        <a 
+                                            href="https://drive.google.com/drive/folders/1MHakRdSLMRjTs4k1CXD9gVQ33ZRrzO-M"
+                                            target="_blank" 
+                                            rel="noreferrer"
+                                            className="group flex items-center justify-center gap-3 p-4 rounded-lg border-2 border-dashed transition-all hover:shadow-md"
+                                            style={{ borderColor: COLORS.accentLight, backgroundColor: '#FFFAF0' }}
+                                        >
+                                            <div className="p-2 rounded-full bg-white shadow-sm">
+                                                <FolderOpen size={20} style={{ color: COLORS.accent }} />
+                                            </div>
+                                            <span className="font-bold text-slate-700 group-hover:text-[#1B365D] transition">
+                                                View Verified Certificates Gallery (Google Drive)
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <SectionTitle icon={Heart}>Social Impact & Branding</SectionTitle>
+                                    <div className="grid gap-6">
+                                        {EXTRAS.map((extra, index) => (
+                                            <Card key={index} className="bg-gradient-to-br from-white to-slate-50">
+                                                <h3 className="text-xl font-bold mb-2" style={{ color: COLORS.textDark }}>{extra.title}</h3>
+                                                <p className="text-slate-600 mb-4">{extra.description}</p>
+                                                <div className="bg-white p-4 rounded border border-slate-100 text-sm italic text-slate-500 border-l-4" style={{ borderLeftColor: COLORS.accent }}>
+                                                    "{extra.details}"
+                                                </div>
+                                            </Card>
+                                        ))}
+                                    </div>
+                                    
+                                    <div className="mt-12 rounded-lg p-10 text-center text-white shadow-xl" style={{ backgroundColor: COLORS.primary }}>
+                                        <h3 className="text-3xl font-serif font-bold mb-4">Let's Connect</h3>
+                                        <p className="mb-8 max-w-xl mx-auto text-slate-200">
+                                            Open to discussions on Marketing Strategy, Brand Development, and Growth Analytics.
+                                        </p>
+                                        <a href={PROFILE.linkedin} target="_blank" rel="noreferrer" 
+                                           className="inline-flex items-center gap-2 px-8 py-3 bg-white rounded-sm font-bold hover:bg-slate-100 transition shadow-lg"
+                                           style={{ color: COLORS.primary }}
+                                        >
+                                            <Linkedin size={20} /> Connect on LinkedIn
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    default:
+                        return null;
+                }
+            };
+
+            return (
+                <div className="min-h-screen bg-slate-50 text-slate-800">
+                    
+                    {/* Mobile Nav Header */}
+                    <div className="md:hidden flex justify-between items-center p-4 bg-white shadow-sm sticky top-0 z-50">
+                        <span className="font-serif font-bold text-xl" style={{ color: COLORS.primary }}>Utkarsh Singh</span>
+                        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 text-slate-600">
+                            {isMenuOpen ? <X /> : <Menu />}
+                        </button>
+                    </div>
+
+                    {/* Mobile Menu Overlay */}
+                    {isMenuOpen && (
+                        <div className="md:hidden fixed inset-0 bg-white z-40 pt-20 px-6 animate-fadeIn">
+                            <div className="flex flex-col gap-4">
+                                {navItems.map(item => (
+                                    <button
+                                        key={item.id}
+                                        onClick={() => {
+                                            setActiveTab(item.id);
+                                            setIsMenuOpen(false);
+                                        }}
+                                        className={`text-left text-lg font-medium py-3 border-b border-slate-100 ${
+                                            activeTab === item.id ? 'font-bold' : 'text-slate-600'
+                                        }`}
+                                        style={{ color: activeTab === item.id ? COLORS.primary : undefined }}
+                                    >
+                                        {item.label}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="flex max-w-7xl mx-auto min-h-screen shadow-2xl bg-white my-0 md:my-8 md:rounded-xl overflow-hidden">
+                        
+                        {/* Sidebar Navigation (Desktop) */}
+                        <aside className="hidden md:flex flex-col w-72 bg-white border-r border-slate-100 z-10">
+                            <div className="p-8">
+                                <h2 className="font-serif text-3xl font-bold" style={{ color: COLORS.primary }}>Utkarsh.</h2>
+                                <p className="text-xs uppercase tracking-widest text-slate-400 mt-2 font-bold">Portfolio</p>
+                            </div>
+                            
+                            <nav className="flex-1 px-4 space-y-2 mt-4">
+                                {navItems.map(item => (
+                                    <button
+                                        key={item.id}
+                                        onClick={() => setActiveTab(item.id)}
+                                        className={`w-full text-left px-6 py-4 rounded-sm text-sm font-bold tracking-wide transition-all duration-200 flex items-center justify-between group`}
+                                        style={
+                                            activeTab === item.id 
+                                                ? { backgroundColor: '#F8FAFC', color: COLORS.primary, borderLeft: `4px solid ${COLORS.accent}` }
+                                                : { color: '#64748b' }
+                                        }
+                                    >
+                                        {item.label}
+                                        {activeTab === item.id && <ChevronRight size={16} style={{ color: COLORS.accent }} />}
+                                    </button>
+                                ))}
+                            </nav>
+
+                            <div className="p-8 border-t border-slate-100 bg-slate-50">
+                                <div className="flex gap-4 justify-center">
+                                    <a href={PROFILE.linkedin} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-blue-600 transition"><Linkedin size={20} /></a>
+                                    <a href={`mailto:${PROFILE.email}`} className="text-slate-400 hover:text-slate-800 transition"><Mail size={20} /></a>
+                                </div>
+                                <p className="text-center text-xs text-slate-300 mt-4 font-serif">© 2026 Utkarsh Singh</p>
+                            </div>
+                        </aside>
+
+                        {/* Main Content Area */}
+                        <main className="flex-1 p-6 md:p-12 lg:p-16 overflow-y-auto bg-white">
+                            <div className="max-w-4xl mx-auto">
+                                {renderContent()}
+                            </div>
+                        </main>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = createRoot(document.getElementById('root'));
+        root.render(<Portfolio />);
+    </script>
+</body>
+</html>
